@@ -56,9 +56,9 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
                 if (intentData.length() > 0) {
                     if (isEmail)
-                        startActivity(new Intent(ScannedBarcodeActivity.this, EmailActivity.class).putExtra("email_address", intentData));
+                        startActivity(new Intent(ScannedBarcodeActivity.this, EmailActivity.class).putExtra("email_address", intentData));//email_address is the key and intentData is the value.We are putting data in the bundle in key value pair.
                     else {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
                     }
                 }
 
@@ -71,24 +71,59 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
 
-        barcodeDetector = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
+        barcodeDetector = new BarcodeDetector.Builder(this)//we can create BarcodeDetector instances using BarcodeDetector.Builder
+                .setBarcodeFormats(Barcode.ALL_FORMATS)//BarcodeDetector is going to search for barcodes in every supported format.
                 .build();
 
+
+        //Below,in order to fetch the stream of images from the devices camera,and display them in the
+        // surface view,we need to create an instance of CameraSource class.
+        //now this CameraSource needs a Barcode detector to be able to detect the barcodes...we create
+        // one barcodeDetector and attach it to the CameraSource.
+
+
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(1920, 1080)
+                .setRequestedPreviewSize(1920, 1080)  //We can adjust the dimensions of the camera preview using SETREQUESTEDPREVIEWSIZE()
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
+
+
+        //Below,we add a callback to the SurfaceHolder of the SurfaceView,so that we know when we should start drawing the preview frames.
+
+        //the callback has 3 methods:
+        // 1. surfaceCreated()
+        //2. surfaceChanged()
+        //3. surfaceDestroyed()
+
+        // 1. inside surfaceCreated,check if the permissions are granted and if granted,then call the start() method of cameraSource.
+        //Because the start method expects you to handle an IOexception,we should call the start method from inside the try catch block.
+
+
+
+
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(ScannedBarcodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ScannedBarcodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) { //context is for accessing the resources,and the second parameter is the permission to check.
                         cameraSource.start(surfaceView.getHolder());
+
+                        //Above,we start the holder for the surface view.i.e we start fetching the stream of images from the camera.
+
                     } else {
                         ActivityCompat.requestPermissions(ScannedBarcodeActivity.this, new
-                                String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                                String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);//if permission for camera has not been granted..prompt the user for that permission.
+
+                            // The requestPermissions(): we pass the context,the list of permissions we
+                        // want to ask and the 3rd parameter is the integer request code that you specify to
+                        // identify this permission request.
+                        //The callback method will get the result of the permission request.
+                        //After the user responds to the prompt,the android system calls the app's callback method
+                        // with the results,passing the same request code that the app passed to request_Permissions()...i.e REQUEST_CAMERA_PERMISSIONS.
+                        //The REQUEST_CAMERA_PERMISSION integer is an integer to identify the permission request.(it acts as a unique identifier).
+
                     }
 
                 } catch (IOException e) {
@@ -99,14 +134,34 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+
+            {
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+
                 cameraSource.stop();
+
+                //to stop fetching the preview frames,i.e images from the camera.
+
+
             }
         });
+
+
+
+        //Below,we need to tell the BarcodeDetector what it should do when it detects a qr code.
+        //setProcessor() is a method of the BarcodeDetector class.
+        //we create an instance of a class that implements the Detector.Processor interface and pass it to setProcessor().
+        //After doing this android studio will automaticaly give you the methods to be implemented i.e void release() and receiveDetections().
+
+        //inside the receiveDetections,we create sparseArray of barcode objects by calling getDetectedItems() method of
+        // the Detector.Detections class.
+
+
+
 
 
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
@@ -117,8 +172,19 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+
+
+                final SparseArray<Barcode> barcodes = detections.getDetectedItems();//the barcode recognition results are returned here..by the getDetecteditems()
+                //the sparseASrray is going to have all the qr codes the barcodeDetecter detected.
+
                 if (barcodes.size() != 0) {
+
+
+
+                    //Note that the call to setText() method should be inside post() method of the textView,because receiveDetections does
+                    // not run on the UI thread.
+
+
 
 
                     txtBarcodeValue.post(new Runnable() {
@@ -128,15 +194,29 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
                             if (barcodes.valueAt(0).email != null) {
                                 txtBarcodeValue.removeCallbacks(null);
-                                intentData = barcodes.valueAt(0).email.address;
+                                intentData = barcodes.valueAt(0).email.address;//barcodes is an array defined above....
                                 txtBarcodeValue.setText(intentData);
+
+                                //the above setText() should be inside post().
+
                                 isEmail = true;
+
                                 btnAction.setText("ADD CONTENT TO THE MAIL");
+
                             } else {
                                 isEmail = false;
+
                                 btnAction.setText("LAUNCH URL");
-                                intentData = barcodes.valueAt(0).displayValue;
+
+                                intentData = barcodes.valueAt(0).displayValue;//barcodes is an array defined above....
+
+                                //each item of sparse array contains a barcode object.
+                                //to fetch the raw contents of the qr code,you can use the Barcode objects's "rawValue" field.
+                                //displayValue is another  field to fetch the contents of the qr code.
+
                                 txtBarcodeValue.setText(intentData);
+
+                                //the above setText() should be inside post().
 
                             }
                         }

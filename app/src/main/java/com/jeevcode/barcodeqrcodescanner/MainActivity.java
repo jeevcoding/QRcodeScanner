@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        // btnTakePicture = findViewById(R.id.btnTakePicture);
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
 //        btnTakePicture.setOnClickListener(this);
-        btnScanBarcode.setOnClickListener(this);
+        btnScanBarcode.setOnClickListener(this);//this means it is refering to the View.OnClickListener interface...
     }
 
     @Override

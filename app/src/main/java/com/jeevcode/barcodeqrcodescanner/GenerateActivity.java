@@ -30,11 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-/*import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest.Builder;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-*/
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -62,7 +58,7 @@ public class GenerateActivity extends AppCompatActivity {
         return true;
     }
 
-    /* Access modifiers changed, original: protected */
+
     public void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
@@ -73,16 +69,14 @@ public class GenerateActivity extends AppCompatActivity {
         this.qr_code = (ImageView) findViewById(R.id.qr_code);
         this.genrate = (Button) findViewById(R.id.generate);
         this.reset = (Button) findViewById(R.id.reset);
-        //this.mAdView = (AdView) findViewById(R.id.adView);
-       // MobileAds.initialize(getApplicationContext(), "ca-app-pub-5884374939904646~6853358510");
-        //this.mAdView.loadAd(new Builder().build());
+
         this.actionBar = getActionBar();
         if (this.actionBar != null)
         {
-          //  this.actionBar.setElevation(2.13109978E9f);
+
             this.actionBar.setDisplayShowHomeEnabled(true);
             this.actionBar.setDisplayHomeAsUpEnabled(true);
-            //this.actionBar.setTitle(R.string.generate);
+
         }
 
 
@@ -152,7 +146,7 @@ public class GenerateActivity extends AppCompatActivity {
                     } else if (VERSION.SDK_INT >= 23) {
                         GenerateActivity.this.getPermission(2);
 
-                        //getPermission() is a userdefined permission()
+
                     }
 
                 }catch (NullPointerException a)
@@ -174,7 +168,7 @@ public class GenerateActivity extends AppCompatActivity {
                 if (GenerateActivity.this.text.getText() != null) {
                     GenerateActivity.this.text.getText().clear();
                 }
-                //GenerateActivity.this.qr_code.setImageResource(R.drawable.myqrcode);
+
             }
         });
 
@@ -245,10 +239,6 @@ public class GenerateActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     public void shareImage(Bitmap bitmap) {
         String file = Environment.getExternalStorageDirectory().toString();
         StringBuilder stringBuilder = new StringBuilder();
@@ -307,9 +297,9 @@ public class GenerateActivity extends AppCompatActivity {
 
             Intent intent = new Intent("android.intent.action.SEND");
             intent.setType("image/*");
-            intent.putExtra("android.intent.extra.STREAM", getImageContentUri(this, file3));//getImageContentUri() is a user defined function...
+            intent.putExtra("android.intent.extra.STREAM", getImageContentUri(this, file3));
             Intent createChooser = Intent.createChooser(intent, "Share image");
-            //createChooser.addFlags(268435456);
+
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(createChooser);
             }
@@ -392,72 +382,5 @@ public class GenerateActivity extends AppCompatActivity {
 
 
 
-
-
-
-   /* public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int itemId = menuItem.getItemId();
-        Intent intent;
-        if (itemId == R.id.rate_us) {
-            String packageName = getPackageName();
-            StringBuilder stringBuilder;
-            try {
-                stringBuilder = new StringBuilder();
-                stringBuilder.append("market://details?id=");
-                stringBuilder.append(packageName);
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(stringBuilder.toString())));
-            } catch (ActivityNotFoundException unused) {
-                stringBuilder = new StringBuilder();
-                stringBuilder.append("https://play.google.com/store/apps/details?id=");
-                stringBuilder.append(packageName);
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(stringBuilder.toString())));
-            }
-            return true;
-        } else if (itemId == R.id.about_us) {
-            startActivity(new Intent(this, AboutUs.class));
-            return true;
-        } else if (itemId == R.id.bug_report) {
-            intent = new Intent("android.intent.action.SENDTO");
-            intent.setData(Uri.parse("mailto:amittechzade@gmail.com"));
-            intent.putExtra("android.intent.extra.EMAIL", "amittechzade@gmail.com");
-            intent.putExtra("android.intent.extra.SUBJECT", "Laser QR Code Scanner and Generator Bug Report");
-            intent.putExtra("android.intent.extra.TEXT", " ");
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-            return true;
-        } else if (itemId != R.id.share) {
-            return super.onOptionsItemSelected(menuItem);
-        } else {
-            intent = new Intent("android.intent.action.SEND");
-            intent.setType("text/plain");
-            intent.putExtra("android.intent.extra.TEXT", "Download this Amazing QR Code Scanner and Generator app  https://play.google.com/store/apps/details?id=example.com.laserqrcodescannerandgenerator");
-            startActivity(intent);
-            return true;
-        }
-    }
-
-    */
-
-    /* Access modifiers changed, original: protected */
-    public void onPause() {
-      //  if (this.mAdView != null) {
-      //      this.mAdView.pause();
-       // }
-        super.onPause();
-    }
-
-    /* Access modifiers changed, original: protected */
-    public void onDestroy() {
-      //  if (this.mAdView != null) {
-      //      this.mAdView.destroy();
-      //  }
-        super.onDestroy();
-    }
 }
 

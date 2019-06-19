@@ -229,7 +229,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
                             intentData = barcodes.valueAt(0).displayValue;
                             txtBarcodeValue.setText(intentData);
-                            btnAction.setText(" CLICK FOR OPTIONS ON CONTENT DETECTED");
+                            btnAction.setText(" Content detected!Click here for further options!");
 
 
 

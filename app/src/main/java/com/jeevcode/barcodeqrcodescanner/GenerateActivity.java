@@ -54,6 +54,7 @@ public class GenerateActivity extends AppCompatActivity {
     private Button save;
     private Button share;
     private EditText text;
+    private static final String TAG = "GenerateActivity!";
 
     public boolean onSupportNavigateUp()
     {
@@ -106,32 +107,63 @@ public class GenerateActivity extends AppCompatActivity {
         {
             public void onClick(View view)
             {
-                Bitmap bitmap = ((BitmapDrawable) GenerateActivity.this.qr_code.getDrawable()).getBitmap();
-                if (bitmap == null)
+
+
+                try {
+
+                    Bitmap bitmap = ((BitmapDrawable) GenerateActivity.this.qr_code.getDrawable()).getBitmap();
+                    if (ContextCompat.checkSelfPermission(GenerateActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
+                        GenerateActivity.this.saveToGallery(bitmap);
+                    } else if (VERSION.SDK_INT >= 23) {
+                        GenerateActivity.this.getPermission(1);
+                    }
+                }catch (NullPointerException a)
+
                 {
-                    return;
+                    Toast.makeText(getApplicationContext(), "Cannot be kept empty!please generate a qrcode!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"caught an exception");
+
                 }
-                if (ContextCompat.checkSelfPermission(GenerateActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
-                    GenerateActivity.this.saveToGallery(bitmap);
-                } else if (VERSION.SDK_INT >= 23) {
-                    GenerateActivity.this.getPermission(1);
-                }
+
+
+
             }
+
+
+
+
         });
 
 
         this.share.setOnClickListener(new OnClickListener()
         {
-            public void onClick(View view) {
-                Bitmap bitmap = ((BitmapDrawable) GenerateActivity.this.qr_code.getDrawable()).getBitmap();
-                if (bitmap == null) {
-                    return;
+            public void onClick(View view)
+            {
+
+
+                try {
+                    Bitmap bitmap = ((BitmapDrawable) GenerateActivity.this.qr_code.getDrawable()).getBitmap();
+                    if (ContextCompat.checkSelfPermission(GenerateActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
+                        GenerateActivity.this.shareImage(bitmap);
+
+                        //shareImage() and getPermission() are two user defined functions
+
+
+                    } else if (VERSION.SDK_INT >= 23) {
+                        GenerateActivity.this.getPermission(2);
+
+                        //getPermission() is a userdefined permission()
+                    }
+
+                }catch (NullPointerException a)
+                {
+                    Toast.makeText(getApplicationContext(), "Cannot be kept empty!please generate a qrcode first!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"caught an exception");
+
                 }
-                if (ContextCompat.checkSelfPermission(GenerateActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
-                    GenerateActivity.this.shareImage(bitmap);
-                } else if (VERSION.SDK_INT >= 23) {
-                    GenerateActivity.this.getPermission(2);
-                }
+
+
+
             }
         });
 
@@ -231,15 +263,28 @@ public class GenerateActivity extends AppCompatActivity {
         Log.i(file, stringBuilder.toString());
         int currentTimeMillis = (int) System.currentTimeMillis();
         stringBuilder = new StringBuilder();
+
+
+
+
+        //Now i have to decide the name by which an image will be stored in the internal storage.....The next 3 lines do that
         stringBuilder.append("Image-");
         stringBuilder.append(currentTimeMillis);
         stringBuilder.append(".jpg");
+
+        //An example of the name of an image that is stored : Image-1870761145.jpg
+
+
+
+
         File file3 = new File(file2, stringBuilder.toString());
         file = Tag;
         StringBuilder stringBuilder2 = new StringBuilder();
         stringBuilder2.append("File value is ");
         stringBuilder2.append(file3);
         Log.i(file, stringBuilder2.toString());
+
+
         if (file3.exists()) {
             file3.delete();
         }
@@ -258,9 +303,11 @@ public class GenerateActivity extends AppCompatActivity {
             stringBuilder3.append("outputStream Value final is ");
             stringBuilder3.append(fileOutputStream);
             Log.i(str, stringBuilder3.toString());
+
+
             Intent intent = new Intent("android.intent.action.SEND");
             intent.setType("image/*");
-            intent.putExtra("android.intent.extra.STREAM", getImageContentUri(this, file3));
+            intent.putExtra("android.intent.extra.STREAM", getImageContentUri(this, file3));//getImageContentUri() is a user defined function...
             Intent createChooser = Intent.createChooser(intent, "Share image");
             //createChooser.addFlags(268435456);
             if (intent.resolveActivity(getPackageManager()) != null) {
@@ -306,7 +353,7 @@ public class GenerateActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     ActivityCompat.requestPermissions(GenerateActivity.this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, i);
                 }
-            }).setNegativeButton("cancle", new DialogInterface.OnClickListener() {
+            }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
                 }

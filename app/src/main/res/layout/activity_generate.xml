@@ -25,7 +25,7 @@
         android:layout_height="250dp"
         android:id="@+id/qr_code"
         android:padding="4dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/holo_blue_light"
 
         />
@@ -33,47 +33,64 @@
     <Button
         android:layout_width="163dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:id="@+id/generate"
         android:text="GENERATE"
         android:padding="4dp"
+        android:textSize="20sp"
+        android:background="@drawable/c2"
+        android:textColor="#ffffff"
+
 
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"  >
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/save"
-            android:layout_width="133dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="5dp"
             android:padding="4dp"
             android:text="SAVE"
+            android:textAllCaps="false"
+            android:background="@drawable/c1"
+            android:textColor="#ffffff"
 
             />
 
         <Button
             android:id="@+id/share"
-            android:layout_width="135dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:padding="4dp"
             android:text="SHARE"
+            android:textAllCaps="false"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/c1"
+            android:textColor="#ffffff"
 
             />
 
         <Button
             android:id="@+id/reset"
-            android:layout_width="163dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:padding="4dp"
             android:text="RESET"
+            android:textAllCaps="false"
+            android:background="@drawable/c1"
+            android:textColor="#ffffff"
+
 
             />
 

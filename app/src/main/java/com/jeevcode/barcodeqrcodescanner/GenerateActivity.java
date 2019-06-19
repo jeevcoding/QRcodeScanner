@@ -44,7 +44,6 @@ public class GenerateActivity extends AppCompatActivity {
     private static final String Tag = "GenerateActivity";
     ActionBar actionBar;
     private Button genrate;
-    //private AdView mAdView;
     private ImageView qr_code;
     private Button reset;
     private Button save;
@@ -140,7 +139,7 @@ public class GenerateActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(GenerateActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE") == 0) {
                         GenerateActivity.this.shareImage(bitmap);
 
-                        //shareImage() and getPermission() are two user defined functions
+                        //shareImage() and getPermission() are two of my user defined functions
 
 
                     } else if (VERSION.SDK_INT >= 23) {
@@ -222,15 +221,15 @@ public class GenerateActivity extends AppCompatActivity {
             stringBuilder.append("outputStream Value final is ");
             stringBuilder.append(fileOutputStream.toString());
             Log.i(str, stringBuilder.toString());
-            //Toast.makeText(this, "saved", 0).show();
+
             Toast.makeText(getApplicationContext(),"saved",Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            //Toast.makeText(this, "something error", 0).show();
+
             Toast.makeText(getApplicationContext(),"some error took place",Toast.LENGTH_SHORT).show();
         } catch (IOException e2) {
             e2.printStackTrace();
-            //Toast.makeText(this, "something error", 0).show();
+
             Toast.makeText(getApplicationContext(),"some error!!",Toast.LENGTH_SHORT).show();
         }
     }

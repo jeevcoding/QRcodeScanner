@@ -59,29 +59,29 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
         btnAction.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
-                if (intentData.length() > 0) {
-                    if (isEmail)
-                        startActivity(new Intent(ScannedBarcodeActivity.this, EmailActivity.class).putExtra("email_address", intentData));//email_address is the key and intentData is the value.We are putting data in the bundle in key value pair.
-                    else {
+                if (intentData.length() > 0)
+
+                {
+
+                    cameraSource.stop();
+                    generateAlertBox();
 
 
-                        try {
+                       /* try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
                         } catch (ActivityNotFoundException e) {
                             Toast.makeText(getApplicationContext(), "NO URL DETECTED!", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "NOTHING AVAILABLE TO HANDLE!!!");
-                            cameraSource.stop();
-                            generateAlertBox();
-
-
                         }
+                        */
 
                         // above we have created an implicit intent,Action_view ids to display stuff on web page.
 
 
-                    }
+
                 }
 
 
@@ -227,8 +227,15 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         {
 
 
+                            intentData = barcodes.valueAt(0).displayValue;
+                            txtBarcodeValue.setText(intentData);
+                            btnAction.setText(" CLICK FOR OPTIONS ON CONTENT DETECTED");
 
-                            if (barcodes.valueAt(0).email != null) {
+
+
+
+
+                          /*  if (barcodes.valueAt(0).email != null) {
 
 
                                 txtBarcodeValue.removeCallbacks(null);
@@ -259,6 +266,8 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                                 //the above setText() should be inside post().
 
                             }
+
+                            */
 
 
 
@@ -330,10 +339,6 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
 
 
-
-
-
-
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -369,6 +374,52 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         } catch (IOException s) {
                             s.printStackTrace();
                         }
+
+
+
+
+                    }
+                })
+                .setNeutralButton("OPEN", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
+                        } catch (ActivityNotFoundException e) {
+                            Toast.makeText(getApplicationContext(), "NO URL DETECTED!", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "NOTHING AVAILABLE TO HANDLE!!!");
+                        }
+
+
+
+
+
+
+                        try {
+                            if (ActivityCompat.checkSelfPermission(ScannedBarcodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) { //context is for accessing the resources,and the second parameter is the permission to check.
+                                cameraSource.start(surfaceView.getHolder());
+
+                                //Above,we start the holder for the surface view.i.e we start fetching the stream of images from the camera.
+
+                            } else {
+                                ActivityCompat.requestPermissions(ScannedBarcodeActivity.this, new
+                                        String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);//if permission for camera has not been granted..prompt the user for that permission.
+
+                                // The requestPermissions(): we pass the context,the list of permissions we
+                                // want to ask and the 3rd parameter is the integer request code that you specify to
+                                // identify this permission request.
+                                //The callback method will get the result of the permission request.
+                                //After the user responds to the prompt,the android system calls the app's callback method
+                                // with the results,passing the same request code that the app passed to request_Permissions()...i.e REQUEST_CAMERA_PERMISSIONS.
+                                //The REQUEST_CAMERA_PERMISSION integer is an integer to identify the permission request.(it acts as a unique identifier).
+
+                            }
+
+                        } catch (IOException s) {
+                            s.printStackTrace();
+                        }
+
 
 
 

@@ -3,12 +3,19 @@ package com.jeevcode.barcodeqrcodescanner;
 
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,8 +31,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class ScannedBarcodeActivity extends AppCompatActivity {
+public class ScannedBarcodeActivity extends AppCompatActivity
+{
 
+    private static final String TAG="ScannedBarcodeActivity!";
     SurfaceView surfaceView;
     TextView txtBarcodeValue;
     private BarcodeDetector barcodeDetector;
@@ -58,7 +67,20 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                     if (isEmail)
                         startActivity(new Intent(ScannedBarcodeActivity.this, EmailActivity.class).putExtra("email_address", intentData));//email_address is the key and intentData is the value.We are putting data in the bundle in key value pair.
                     else {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
+
+
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
+                        }catch (ActivityNotFoundException e)
+                        {
+                            Toast.makeText(getApplicationContext(),"NO URL DETECTED!",Toast.LENGTH_SHORT).show();
+                            Log.d(TAG,"NOTHING AVAILABLE TO HANDLE!!!");
+                            generateAlertBox();
+                        }
+
+                        // above we have created an implicit intent,Action_view ids to display stuff on web page.
+
+
                     }
                 }
 
@@ -67,7 +89,8 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         });
     }
 
-    private void initialiseDetectorsAndSources() {
+    private void initialiseDetectorsAndSources()
+    {
 
         Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
 
@@ -164,44 +187,71 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
 
 
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>()
+        {
             @Override
             public void release() {
                 Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
+            public void receiveDetections(Detector.Detections<Barcode> detections)
+
+            {
 
 
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();//the barcode recognition results are returned here..by the getDetecteditems()
                 //the sparseASrray is going to have all the qr codes the barcodeDetecter detected.
 
-                if (barcodes.size() != 0) {
+                if (barcodes.size() != 0)
 
+                {
 
 
                     //Note that the call to setText() method should be inside post() method of the textView,because receiveDetections does
                     // not run on the UI thread.
 
 
+                        //you added the alerbox here as well second time.......................
 
 
-                    txtBarcodeValue.post(new Runnable() {
+
+
+
+                    //*****************************************************************************************************88
+
+
+
+
+                    txtBarcodeValue.post(new Runnable()
+                    {
+
+
 
                         @Override
-                        public void run() {
+                        public void run()
+                        {
+
+                            //added new code here within****************************************************************!!
+                           /* intentData = barcodes.valueAt(0).displayValue;
+                            generateAlertBox();
+                            */
+
+                            //***************************************************************************************!!
 
                             if (barcodes.valueAt(0).email != null) {
+
+
                                 txtBarcodeValue.removeCallbacks(null);
                                 intentData = barcodes.valueAt(0).email.address;//barcodes is an array defined above....
+
                                 txtBarcodeValue.setText(intentData);
 
                                 //the above setText() should be inside post().
 
                                 isEmail = true;
 
-                                btnAction.setText("ADD CONTENT TO THE MAIL");
+                                btnAction.setText("EMAIL ID DETECTED:SEND CONTENT THROUGH EMAIL");
 
                             } else {
                                 isEmail = false;
@@ -216,16 +266,106 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
                                 txtBarcodeValue.setText(intentData);
 
+
+
+
+                                //generateAlertBox();
+
                                 //the above setText() should be inside post().
 
                             }
+
+
+
+
+                                //*******************************************************************************************
+                            // generateAlertBox();
+                            //added the alert box here!!............................................................
+
+
+
+
+
                         }
+
+                        //you added the alertBox here as well.......................
+
+
+
+                        //****************************************************************
                     });
 
+
+
+
+                    //you added the alert box here as well.................
+
+
+
+                    //***************************************************
                 }
+
+
+
+
             }
+
+
         });
+
+
+        //you added the try catch for the alertbox here.................................................................................********
+
+       /* try {
+            if (intentData != null && !intentData.isEmpty()) {
+
+                Toast.makeText(getApplicationContext(),"the value is"+intentData,Toast.LENGTH_SHORT).show();
+                generateAlertBox();
+            }
+        }catch (NullPointerException e)
+        {
+            Log.d(TAG,"********The intent data is empty");
+            Toast.makeText(getApplicationContext(),"the qr code is empty or has a space",Toast.LENGTH_SHORT).show();
+        }
+*/
+        //***************************************************************************************************************************************
+
+
+
     }
+
+
+    void generateAlertBox(){
+
+        new AlertDialog.Builder(ScannedBarcodeActivity.this).setTitle("Scanned Result")
+                .setMessage(intentData)
+                .setPositiveButton("COPY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        ClipboardManager manager=(ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
+                        ClipData data=ClipData.newPlainText("Result",intentData);
+
+                        manager.setPrimaryClip(data);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+
+
+
+        //*********************************************************************************************
+    }
+
 
 
     @Override
@@ -235,8 +375,23 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         initialiseDetectorsAndSources();
+
+       /* try {
+            if (intentData != null) {
+
+                Toast.makeText(getApplicationContext(),"the value is"+intentData,Toast.LENGTH_SHORT).show();
+                generateAlertBox();
+            }
+        }catch (NullPointerException e)
+        {
+            Log.d(TAG,"********The intent data is empty");
+            Toast.makeText(getApplicationContext(),"the qr code is empty or has a space",Toast.LENGTH_SHORT).show();
+        }
+        */
+
     }
 }

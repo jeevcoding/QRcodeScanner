@@ -30,11 +30,8 @@
         </activity>
 
 
-        <activity android:name=".PictureBarcodeActivity"/>
-
         <activity android:name=".ScannedBarcodeActivity"/>
-
-        <activity android:name=".EmailActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".GenerateActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

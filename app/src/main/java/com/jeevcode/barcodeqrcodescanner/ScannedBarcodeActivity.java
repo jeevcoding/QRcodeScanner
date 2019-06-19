@@ -235,39 +235,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
 
 
-                          /*  if (barcodes.valueAt(0).email != null) {
 
-
-                                txtBarcodeValue.removeCallbacks(null);
-                                intentData = barcodes.valueAt(0).email.address;//barcodes is an array defined above....
-
-                                txtBarcodeValue.setText(intentData);
-
-                                //the above setText() should be inside post().
-
-                                isEmail = true;
-
-                                btnAction.setText("EMAIL ID DETECTED:SEND CONTENT THROUGH EMAIL");
-
-                            } else {
-                                isEmail = false;
-
-                                btnAction.setText("LAUNCH URL");
-
-                                intentData = barcodes.valueAt(0).displayValue;//barcodes is an array defined above....
-
-                                //each item of sparse array contains a barcode object.
-                                //to fetch the raw contents of the qr code,you can use the Barcode objects's "rawValue" field.
-                                //displayValue is another  field to fetch the contents of the qr code.
-
-                                txtBarcodeValue.setText(intentData);
-
-
-                                //the above setText() should be inside post().
-
-                            }
-
-                            */
 
 
 
@@ -447,18 +415,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         super.onResume();
         initialiseDetectorsAndSources();
 
-       /* try {
-            if (intentData != null) {
 
-                Toast.makeText(getApplicationContext(),"the value is"+intentData,Toast.LENGTH_SHORT).show();
-                generateAlertBox();
-            }
-        }catch (NullPointerException e)
-        {
-            Log.d(TAG,"********The intent data is empty");
-            Toast.makeText(getApplicationContext(),"the qr code is empty or has a space",Toast.LENGTH_SHORT).show();
-        }
-        */
 
     }
 }

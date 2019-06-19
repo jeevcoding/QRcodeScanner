@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".GenerateActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center" >
+
+
+
+   <EditText
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/text"
+       android:textSize="20sp"
+       android:layout_gravity="top"
+       android:textColor="@android:color/black"
+       android:hint="Type something here"
+       />
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/qr_code"
+        android:padding="4dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_blue_light"
+
+        />
+
+    <Button
+        android:layout_width="163dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/generate"
+        android:text="GENERATE"
+        android:padding="4dp"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"  >
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:padding="4dp"
+            android:text="SAVE"
+
+            />
+
+        <Button
+            android:id="@+id/share"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="4dp"
+            android:text="SHARE"
+
+            />
+
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="163dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:padding="4dp"
+            android:text="RESET"
+
+            />
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

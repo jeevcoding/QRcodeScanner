@@ -9,5 +9,10 @@
     <string name="open_camera">OPEN CAMERA</string>
 
     <string name="send_email">SEND EMAIL</string>
+    <string name="storage_Permission">GRANT PERMISSIONS</string>
+    <string name="storage_Permission_msg">Please grant the permissions!</string>
+
+    <string name="gen_barcode">Generate Barcode</string>
+
 
 </resources>

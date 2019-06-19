@@ -10,7 +10,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnTakePicture, btnScanBarcode;
+    Button btnGenBarcode, btnScanBarcode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +21,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
-       // btnTakePicture = findViewById(R.id.btnTakePicture);
+       btnGenBarcode  = findViewById(R.id.btnGenBarcode);
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
-//        btnTakePicture.setOnClickListener(this);
+
+        btnGenBarcode.setOnClickListener(this);
         btnScanBarcode.setOnClickListener(this);//this means it is refering to the View.OnClickListener interface...
     }
 
@@ -30,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()) {
-            //case R.id.btnTakePicture:
-                //startActivity(new Intent(MainActivity.this, PictureBarcodeActivity.class));
-                //break;
+            case R.id.btnGenBarcode:
+                startActivity(new Intent(MainActivity.this, GenerateActivity.class));
+                break;
             case R.id.btnScanBarcode:
                 startActivity(new Intent(MainActivity.this, ScannedBarcodeActivity.class));
                 break;

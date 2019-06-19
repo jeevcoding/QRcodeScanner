@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="No QR-Code detected!(Press scan button again if black screen appears!!)"
+        android:text="@string/a"
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:background="@drawable/c3"

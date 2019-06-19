@@ -355,7 +355,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(intentData)));//this line tells the android system to view whatever is there in the intentData
                         } catch (ActivityNotFoundException e) {
-                            Toast.makeText(getApplicationContext(), "NO URL DETECTED!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "THIS IS NOT A URL!", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "NOTHING AVAILABLE TO HANDLE!!!");
                         }
 

@@ -13,6 +13,6 @@
     <string name="storage_Permission_msg">Please grant the permissions!</string>
 
     <string name="gen_barcode">Generate QR-Code</string>
-
+    <string name="a">No QR-Code detected!(Press SCAN QR-CODE button again if black screen appears!!)</string>
 
 </resources>
